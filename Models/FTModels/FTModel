@@ -1,0 +1,6 @@
+__author__ = 'Daniyar'
+
+class FTModel:
+
+    def __init__(self):
+        pass

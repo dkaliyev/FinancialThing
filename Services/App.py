@@ -1,4 +1,4 @@
-from grabber import DataGrabber
+from grabber.grabber import DataGrabber
 
 __author__ = 'Daniyar'
 

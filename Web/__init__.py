@@ -8,7 +8,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from DataAccess.FT import FT
 from Helpers import JSONHelper
-from grabber import grabber
+from grabber.grabber import DataGrabber
 
 
 

@@ -1,5 +1,12 @@
 <!doctype html>
 <html>
+{% set navigation_bar = [
+    ('/', 'index', 'Dashboard', 'fa-dashboard'),
+    ('/tables', 'tables', 'Tables', 'fa-table'),
+    ('/charts', 'charts', 'Charts', 'fa-bar-chart-o'),
+    ('/forms', 'forms', 'Forms', 'fa-edit')
+] -%}
+{% set active_page = active_page|default('index') -%}
   <head>
     {% block head %}
     <meta charset="utf-8">
@@ -11,6 +18,8 @@
 
     <!-- Custom CSS -->
     <link href="static/css/sb-admin.css" rel="stylesheet">
+    <link href="static/css/style.css" rel="stylesheet">
+    <link href="static/css/toastr.css" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
     <link href="static/css/plugins/morris.css" rel="stylesheet">
@@ -23,6 +32,7 @@
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
     <![endif]-->
     <title>{% block title %}{% endblock %} - Financial app</title>
     {% endblock %}
@@ -144,7 +154,47 @@
                 </li>
             </ul>
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-            {% block sidebar %}{% endblock %}
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    {% for href, id, caption, class in navigation_bar %}
+                    <li {% if id == active_page %} class="active"{% endif  %}>
+                        <a href="{{href}}"><i class="fa fa-fw {{class}}"></i> {{caption}}</a>
+                    </li>
+                    <!--<li>
+                        <a href="/charts"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
+                    </li>
+                    <li class="active">
+                        <a href="/tables"><i class="fa fa-fw fa-table"></i> Tables</a>
+                    </li>
+                    <li>
+                        <a href="/forms"><i class="fa fa-fw fa-edit"></i> Forms</a>
+                    </li>
+                    <li>
+                        <a href="/bootstrap-elements"><i class="fa fa-fw fa-desktop"></i> Bootstrap Elements</a>
+                    </li>
+                    <li>
+                        <a href="/bootstrap-grid"><i class="fa fa-fw fa-wrench"></i> Bootstrap Grid</a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Dropdown <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="demo" class="collapse">
+                            <li>
+                                <a href="#">Dropdown Item</a>
+                            </li>
+                            <li>
+                                <a href="#">Dropdown Item</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="blank-page.html"><i class="fa fa-fw fa-file"></i> Blank Page</a>
+                    </li>
+                    <li>
+                        <a href="index-rtl.html"><i class="fa fa-fw fa-dashboard"></i> RTL Dashboard</a>
+                    </li>-->
+                    {% endfor %}
+                </ul>
+            </div>
             <!-- /.navbar-collapse -->
         </nav>
             {% block content %}{% endblock %}
@@ -152,13 +202,46 @@
         <!-- /#page-wrapper -->
 
     </div>
+    <div id="popup">
+    <div class="row">
+        <div class="popup col-md-5">
+            <div>
+                <h2>Add new company</h2>
+                <div class="add_company_form">
+                    <form class="form-horizontal">
+                      <div class="form-group">
+                        <label for="company_name" class="col-sm-3 control-label">Company name</label>
+                        <div class="col-sm-4">
+                          <input type="text" class="form-control" id="company_name" placeholder="e.g AAPL">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="se" class="col-sm-3 control-label">Stock exchange</label>
+                        <div class="col-sm-4">
+                          <input type="text" class="form-control" id="se" placeholder="e.g LSE">
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-10">
+                          <button type="button" class="btn btn-success add_btn">Add</button>
+                          <button type="button" class="btn btn-danger close_btn">Cancel</button>
+                        </div>
+                      </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
     <div id="footer">
       {% block footer %}
       &copy; Copyright 2010 by <a href="http://domain.invalid/">you</a>.
       {% endblock %}
     </div>
-  <script src="static/js/jquery.js"></script>
 
+    <script src="static/js/jquery.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="static/js/bootstrap.min.js"></script>
 
@@ -166,5 +249,10 @@
     <script src="static/js/plugins/morris/raphael.min.js"></script>
     <script src="static/js/plugins/morris/morris.min.js"></script>
     <script src="static/js/plugins/morris/morris-data.js"></script>
+
+
+    <!-- Handlebars -->
+    <script src="static/js/handlebars-v3.0.3.js"></script>
+    <script src="static/js/toastr.js"></script>
   </body>
 </html>

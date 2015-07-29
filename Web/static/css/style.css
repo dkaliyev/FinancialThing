@@ -1,0 +1,35 @@
+.subtype {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.popup {
+    height: 300px;
+    background: white;
+    margin-left: 20%;
+    position: absolute;
+    top: 100px;
+
+}
+
+#popup {
+ display:none;
+ z-index: 100;
+}
+
+.add_company {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.add_company_form {
+    margin-top: 20px;
+}
+
+.close_btn {
+    cursor: pointer;
+}
+
+.loader {
+    display:none;
+}

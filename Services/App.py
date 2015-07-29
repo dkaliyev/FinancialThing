@@ -1,10 +1,15 @@
-from grabber.grabber import DataGrabber
-
 __author__ = 'Daniyar'
 
+import sys
+import os.path
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+
 from flask import Flask, jsonify, request
-from Adapters.MongoDB import *
+from grabber import grabber
+from Adapters.MongoDB import MongoDB
 from Helpers import JSONHelper
+
 
 app = Flask(__name__)
 repo = MongoDB()

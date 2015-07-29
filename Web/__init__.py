@@ -1,8 +1,16 @@
+__author__ = 'Daniyar'
+
+import sys
+import os.path
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+
+
 from DataAccess.FT import FT
 from Helpers import JSONHelper
-from grabber import DataGrabber
+from grabber import grabber
 
-__author__ = 'Daniyar'
+
 
 from flask import Flask, render_template, request
 

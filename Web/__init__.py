@@ -33,7 +33,8 @@ def tables():
     count = dataAccess.get_data_count()
     companies = dataAccess.get_companies()
     company_list = [{'name': x['company_name'], 'active': False} for x in companies['data']]
-    company_list[0]['active'] = True
+    if company_list != []:
+        company_list[0]['active'] = True
     return render_template('tables.html', obj={'count': count, 'company_list': company_list})
 
 @app.route('/api/tables/<company_name>', methods=['GET'])

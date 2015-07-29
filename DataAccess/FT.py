@@ -23,12 +23,12 @@ class FT:
 
     def save_company(self, name, exch):
         urlLink = host+"companies"
-        result = requests.post(urlLink, None, {'data': {'name': name, 'exch': exch}})
+        result = requests.post(url=urlLink, json={'data': {'name': name, 'exch': exch}})
         return result.text
 
     def save_data(self, data):
         urlLink = host+'data'
-        result = requests.post(urlLink, None, {'data': data})
+        result = requests.post(url=urlLink, json={'data': data})
         return result.text
 
     def get_data(self, page, company=None):

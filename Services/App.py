@@ -9,6 +9,8 @@ from flask import Flask, jsonify, request
 from grabber import grabber
 from Adapters.MongoDB import MongoDB
 from Helpers import JSONHelper
+import requests
+from bs4 import BeautifulSoup
 
 
 app = Flask(__name__)
@@ -48,13 +50,28 @@ def get_company_by_name(name, page):
     data = repo.select_by_page(page, {'company_name': name})
     return JSONHelper.JSONEncoder().encode({"data": data})
 
-@app.route('/companies', methods=["POST"])
+@app.route('/companies/add', methods=["POST"])
 def save_company():
     obj = request.json['data']
     if obj is not None and obj['name'] is not None and obj['exch'] is not None:
-        return repo.save_company(obj['name'], obj['exch'])
+        company_page = requests.get("http://markets.ft.com/research/Markets/Tearsheets/Summary?s="+obj['name']+":"+obj['exch']).text
+        html = BeautifulSoup(company_page)
+        name = html.find_all('span', 'formatIssueName')
+        if len(name) != 0:
+            return JSONHelper.JSONEncoder().encode(repo.save_company(obj['name'], obj['exch'], name[0].text))
     else:
-        return '-1'
+        return JSONHelper.JSONEncoder().encode({'status': -1, 'message': 'Specify name and stock exchange'})
+
+@app.route('/companies/remove', methods=["POST"])
+def delete_company():
+    obj = request.json['data']
+    name = obj['name']
+    return JSONHelper.JSONEncoder().encode(repo.remove_company(name))
+
+@app.route('/companies/update', methods=['POST'])
+def update_company():
+    obj = request.json['data']
+    return JSONHelper.JSONEncoder().encode(repo.update_company(obj))
 
 if __name__ == '__main__':
     app.debug = True

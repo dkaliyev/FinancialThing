@@ -63,5 +63,26 @@ class MongoDB:
     def select_companies(self):
         return [x for x in self.companies_collection.find()]
 
-    def save_company(self, name, exg):
-        return self.companies_collection.insert_one({"company_name": name, "stock_exc": exg}).inserted_id
+    def save_company(self, name, exg, title):
+        company = self.companies_collection.find_one({"company_name": name});
+        if company is not None:
+            return {'status': -1, 'message': "Company already exists"}
+        ins_id = str(self.companies_collection.insert_one({"company_name": name, "stock_exc": exg, "title": title, "isVisible": True}).inserted_id)    
+        return {'status': 0, 'message': 'Company saved successfully'}
+
+    def remove_company(self, name):
+        if name is not None and name != "":
+            result = self.companies_collection.delete_one({"company_name":name}).deleted_count
+            result2 = self.collection.delete_many({'company_name': name}).deleted_count
+            if result>0:
+                return {'status': 0}
+            else:
+                return {'status': -1, 'message': 'Cannot remove company'}
+        return {'status': -1, 'message': 'Specify name of the company'}
+
+    def update_company(self, updates):
+        if updates is not None:
+            for update in updates:
+                for key in update:
+                    self.companies_collection.update_one({'company_name': key}, {'$set': {'isVisible': update[key]}})
+        return {'status': 0, 'message': 'Updated!'}            

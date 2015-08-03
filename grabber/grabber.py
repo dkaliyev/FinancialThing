@@ -10,7 +10,7 @@ import pandas as pd
 from Adapters.MongoDB import *
 
 class DataGrabber:
-    headers = ["BalanceSheet", "IncomeStatement", "CashFlow"]
+    headers = ["IncomeStatement", "BalanceSheet", "CashFlow"]
     titles = ["ASSETS", "LIABILITIES", "SHAREHOLDERS EQUITY", "OPERATIONS", "INVESTING", "FINANCING", "NET CHANGE IN CASH",
               "SUPPLEMENTAL INCOME","REVENUE AND GROSS PROFIT", "OPERATING EXPENSES",
               "INCOME TAXES, MINORITY INTEREST AND EXTRA ITEMS", "EPS RECONCILIATION", "COMMON STOCK DIVIDENDS",
@@ -136,6 +136,7 @@ class DataGrabber:
             datas = dict()
             datas["company_name"] = company[0]
             datas["date_added"] = str(datetime.datetime.now())
+            datas['title'] = company[2]
             datas["data"] = []
             for header in self.headers:
                 tmp_dat = self.get_data(header, company)
@@ -194,7 +195,7 @@ class DataGrabber:
 
 
     def companies_to_tuple(self, companies):
-        conv_companies = [(obj['company_name'], obj['stock_exc']) for obj in companies['data']]
+        conv_companies = [(obj['company_name'], obj['stock_exc'], obj['title']) for obj in companies['data']]
         return conv_companies
 
     def generate_data(self):

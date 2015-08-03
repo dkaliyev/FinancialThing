@@ -2,13 +2,14 @@
 <html>
 {% set navigation_bar = [
     ('/', 'index', 'Dashboard', 'fa-dashboard'),
+    ('/companies', 'companies', 'Companies', 'fa-university'),
     ('/tables', 'tables', 'Tables', 'fa-table'),
-    ('/charts', 'charts', 'Charts', 'fa-bar-chart-o'),
-    ('/forms', 'forms', 'Forms', 'fa-edit')
+    ('#', 'charts', 'Charts', 'fa-bar-chart-o')
 ] -%}
 {% set active_page = active_page|default('index') -%}
   <head>
     {% block head %}
+    <script src="static/js/jquery.js"></script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -241,7 +242,7 @@
       {% endblock %}
     </div>
 
-    <script src="static/js/jquery.js"></script>
+    
     <!-- Bootstrap Core JavaScript -->
     <script src="static/js/bootstrap.min.js"></script>
 

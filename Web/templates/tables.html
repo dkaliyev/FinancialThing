@@ -1,8 +1,9 @@
 {% extends "layout.html" %}
 {% set active_page = "tables" %}
+{% set visible_companies = obj.company_list %}
 {% block title %}Index-{{obj.count}}{% endblock %}
 {% block head %}
-<script src="static/js/jquery.js"></script>
+<!-- <script src="static/js/jquery.js"></script> -->
   {{ super() }}
 {% endblock %}
 
@@ -17,14 +18,6 @@
                         <h1 class="page-header">
                             Tables
                         </h1>
-                        <ol class="breadcrumb">
-                            <li>
-                                <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
-                            </li>
-                            <li class="active">
-                                <i class="fa fa-table"></i> Tables
-                            </li>
-                        </ol>
                     </div>
                 </div>
                 <div >
@@ -35,203 +28,16 @@
 
                 <!-- /.row -->
                 <ul class="nav nav-tabs" role="tablist" id="myTabs">
-                    {% for company in obj.company_list %}
-                    <li role="presentation" {% if company.active == True %} class="active"{% endif %}><a href="#{{company.name}}" aria-controls="{{company.name}}" role="tab" data-toggle="tab" onclick="get_data('{{company.name}}')">{{company.name}}</a></li>
+                    {% for company in visible_companies %}
+                    <li role="presentation" {% if company.active == True %} class="active"{% endif %}>
+                        <a href="#" aria-controls="{{company.name}}" role="tab" data-toggle="tab" onclick="get_data('{{company.name}}')">{{company.title}}<i class="fa fa-times remove" comp-name="{{company.name}}"></i></a>
+
+                    </li>
                     {% endfor %}
                 </ul>
                 <div class="tab-content">
 
                 </div>
-                <!-- /.row -->
-
-                <!--<div class="row">
-                    <div class="col-lg-6">
-                        <h2>Basic Table</h2>
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Page</th>
-                                        <th>Visits</th>
-                                        <th>% New Visits</th>
-                                        <th>Revenue</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>/index.html</td>
-                                        <td>1265</td>
-                                        <td>32.3%</td>
-                                        <td>$321.33</td>
-                                    </tr>
-                                    <tr>
-                                        <td>/about.html</td>
-                                        <td>261</td>
-                                        <td>33.3%</td>
-                                        <td>$234.12</td>
-                                    </tr>
-                                    <tr>
-                                        <td>/sales.html</td>
-                                        <td>665</td>
-                                        <td>21.3%</td>
-                                        <td>$16.34</td>
-                                    </tr>
-                                    <tr>
-                                        <td>/blog.html</td>
-                                        <td>9516</td>
-                                        <td>89.3%</td>
-                                        <td>$1644.43</td>
-                                    </tr>
-                                    <tr>
-                                        <td>/404.html</td>
-                                        <td>23</td>
-                                        <td>34.3%</td>
-                                        <td>$23.52</td>
-                                    </tr>
-                                    <tr>
-                                        <td>/services.html</td>
-                                        <td>421</td>
-                                        <td>60.3%</td>
-                                        <td>$724.32</td>
-                                    </tr>
-                                    <tr>
-                                        <td>/blog/post.html</td>
-                                        <td>1233</td>
-                                        <td>93.2%</td>
-                                        <td>$126.34</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <h2>Striped Rows</h2>
-                        <div class="table-responsive">
-                            <table class="table table-hover table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Page</th>
-                                        <th>Visits</th>
-                                        <th>% New Visits</th>
-                                        <th>Revenue</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>/index.html</td>
-                                        <td>1265</td>
-                                        <td>32.3%</td>
-                                        <td>$321.33</td>
-                                    </tr>
-                                    <tr>
-                                        <td>/about.html</td>
-                                        <td>261</td>
-                                        <td>33.3%</td>
-                                        <td>$234.12</td>
-                                    </tr>
-                                    <tr>
-                                        <td>/sales.html</td>
-                                        <td>665</td>
-                                        <td>21.3%</td>
-                                        <td>$16.34</td>
-                                    </tr>
-                                    <tr>
-                                        <td>/blog.html</td>
-                                        <td>9516</td>
-                                        <td>89.3%</td>
-                                        <td>$1644.43</td>
-                                    </tr>
-                                    <tr>
-                                        <td>/404.html</td>
-                                        <td>23</td>
-                                        <td>34.3%</td>
-                                        <td>$23.52</td>
-                                    </tr>
-                                    <tr>
-                                        <td>/services.html</td>
-                                        <td>421</td>
-                                        <td>60.3%</td>
-                                        <td>$724.32</td>
-                                    </tr>
-                                    <tr>
-                                        <td>/blog/post.html</td>
-                                        <td>1233</td>
-                                        <td>93.2%</td>
-                                        <td>$126.34</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                &lt;!&ndash; /.row &ndash;&gt;
-
-                <div class="row">
-                    <div class="col-lg-6">
-                        <h2>Contextual Classes</h2>
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-hover table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Page</th>
-                                        <th>Visits</th>
-                                        <th>% New Visits</th>
-                                        <th>Revenue</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="active">
-                                        <td>/index.html</td>
-                                        <td>1265</td>
-                                        <td>32.3%</td>
-                                        <td>$321.33</td>
-                                    </tr>
-                                    <tr class="success">
-                                        <td>/about.html</td>
-                                        <td>261</td>
-                                        <td>33.3%</td>
-                                        <td>$234.12</td>
-                                    </tr>
-                                    <tr class="warning">
-                                        <td>/sales.html</td>
-                                        <td>665</td>
-                                        <td>21.3%</td>
-                                        <td>$16.34</td>
-                                    </tr>
-                                    <tr class="danger">
-                                        <td>/blog.html</td>
-                                        <td>9516</td>
-                                        <td>89.3%</td>
-                                        <td>$1644.43</td>
-                                    </tr>
-                                    <tr>
-                                        <td>/404.html</td>
-                                        <td>23</td>
-                                        <td>34.3%</td>
-                                        <td>$23.52</td>
-                                    </tr>
-                                    <tr>
-                                        <td>/services.html</td>
-                                        <td>421</td>
-                                        <td>60.3%</td>
-                                        <td>$724.32</td>
-                                    </tr>
-                                    <tr>
-                                        <td>/blog/post.html</td>
-                                        <td>1233</td>
-                                        <td>93.2%</td>
-                                        <td>$126.34</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <h2>Bootstrap Docs</h2>
-                        <p>For complete documentation, please visit <a target="_blank" href="http://getbootstrap.com/css/#tables">Bootstrap's Tables Documentation</a>.</p>
-                    </div>
-                </div>-->
-                <!-- /.row -->
 
             </div>
             <!-- /.container-fluid -->
@@ -243,23 +49,25 @@
 <script type="text/javascript">
 $( document ).ready(function() {
 
+    {% if visible_companies|length > 0 %}
+        $.ajax({
+          url: "/api/tables/{{visible_companies[0].name}}",
+          method: "GET",
+          contentType: "application/json",
+          success: function(data, status, xsml){
+            var source   = $("#entry-template").html();
+            var template = Handlebars.compile(source);
+            console.log(data['data'][0]);
+            var html = template({'datas': data['data'][0]});
+            $(".tab-content").append(html);
 
-    $.ajax({
-      url: "/api/tables/AAPL",
-      method: "GET",
-      contentType: "application/json",
-      success: function(data, status, xsml){
-        var source   = $("#entry-template").html();
-        var template = Handlebars.compile(source);
-        console.log(data['data'][0]);
-        var html = template({'datas': data['data'][0]});
-        $(".tab-content").append(html);
+          },
+          dataType: "json"
+            }).done(function() {
+                console.log("done");
+                });
+    {% endif %}
 
-      },
-      dataType: "json"
-        }).done(function() {
-            console.log("done");
-            });
 
     $('.add_company').click(function(e){
         openPopup();
@@ -274,15 +82,42 @@ $( document ).ready(function() {
         var se = $('#se').val();
         $.ajax({
             type: "POST",
-            url: "/api/companies",
+            url: "/api/companies/add",
             data: JSON.stringify({'data': {'name': comp, 'ex': se}}),
             contentType: "application/json; charset=utf-8",
-            success: function() {
-             var newLi = '<li role="presentation"><a href="#'+comp+'" aria-controls="'+comp+'" role="tab" data-toggle="tab" onclick=get_data("'+comp+'")'+'>'+comp+'</a></li>';
-              $('#myTabs').append($(newLi));
+            success: function(d) {
+                data = $.parseJSON(d);
+                data = $.parseJSON(data);
+                console.log(data['status']);
+                if(data['status']==0) {
+                    var newLi = '<li role="presentation"><a href="#'+comp+'" aria-controls="'+comp+'" role="tab" data-toggle="tab" onclick=get_data("'+comp+'")'+'>'+comp+'</a></li>';
+                    $('#myTabs').append($(newLi));
+                }
+                else {
+                    toastr.error(data['message']);
+                }
             }
          });
         closePopup();
+    });
+
+    $('.remove').click(function(e){
+        e.stopPropagation();
+        console.log(e);
+        name = e.currentTarget.attributes['comp-name'].nodeValue;
+        $.ajax({
+            type: "POST",
+            url: "/api/companies/remove",
+            data: JSON.stringify({'data': {'name': name}}),
+            contentType: "application/json; charset=utf-8",
+            success: function(d) {
+                data = $.parseJSON(d);
+                data = $.parseJSON(data);
+                if(data['status']!=0) {
+                    toastr.error(data['message']);
+                }
+            }
+         });
     });
 
     $('.generate_company').click(function(e){
@@ -290,17 +125,17 @@ $( document ).ready(function() {
         $('.generate_company').attr('disabled', 'disabled');
         $('.loader').fadeIn('fast');
         $.ajax({
-        method: "get",
-         url: "/api/data/generate",
-         success: function(data) {
-            $('.loader').fadeOut('fast');
-            if(data=='1'){
-                toastr.success('New data generated successfully!', 'Success');
-            }
-            else {
-                toastr.error('Data was not inserted!', 'Error');
-            }
-         }}).done(function(){
+            method: "get",
+            url: "/api/data/generate",
+            success: function(data) {
+                $('.loader').fadeOut('fast');
+                if(data=='1'){
+                    toastr.success('New data generated successfully!', 'Success');
+                }
+                else {
+                    toastr.error('Data was not inserted!', 'Error');
+                }
+            }}).done(function(){
             $('.loader').fadeOut('fast');
             $('.add_company').removeAttr('disabled');
             $('.generate_company').removeAttr('disabled');
@@ -355,43 +190,49 @@ function get_data(company_name) {
     {% raw %}
     {{#with datas}}
     <div role="tabpanel" class="tab-pane fade in active" id="{{company_name}}">
-        <div class="row">
-            {{#each data}}
-            <div class="col-lg-4">
-                <h2>{{report_type}}</h2>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>2014</th>
-                                <th>2013</th>
-                                <th>2012</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {{#each data}}
-                            <tr>
-                                <td class="subtype">{{subtype}}</td>
-                            </tr>
-                                {{#each data}}
-                                <tr>
-                                    <td>
-                                        {{item_name}}
-                                    </td>
-                                    {{#each items}}
-                                        <td>{{value}}</td>
-                                    {{/each}}
-                                </tr>
-                                {{/each}}
-                            {{/each}}
-                        </tbody>
-                    </table>
-                </div>
-
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2>{{title}}</h2>
             </div>
-            {{/each}}
-        </div>
+            <div class="panel-body">
+                <div class="row">
+                    {{#each data}}
+                    <div class="col-lg-4">
+                        <h3>{{report_type}}</h2>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>2014</th>
+                                        <th>2013</th>
+                                        <th>2012</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each data}}
+                                    <tr>
+                                        <td class="subtype">{{subtype}}</td>
+                                    </tr>
+                                        {{#each data}}
+                                        <tr>
+                                            <td>
+                                                {{item_name}}
+                                            </td>
+                                            {{#each items}}
+                                                <td>{{value}}</td>
+                                            {{/each}}
+                                        </tr>
+                                        {{/each}}
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        <div>
     </div>
     {{/with}}
     {% endraw %}

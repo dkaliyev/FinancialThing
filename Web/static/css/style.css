@@ -33,3 +33,12 @@
 .loader {
     display:none;
 }
+
+.remove {
+    margin-left: 20px;
+}
+
+.fa.fa-times.remove:hover {
+    cursor: pointer;
+    color: red;
+}

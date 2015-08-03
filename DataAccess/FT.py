@@ -22,14 +22,24 @@ class FT:
         return JSONHelper.JSONDecoder().decode(result)
 
     def save_company(self, name, exch):
-        urlLink = host+"companies"
+        urlLink = host+"companies/add"
         result = requests.post(urlLink, None, {'data': {'name': name, 'exch': exch}})
         return result.text
+
+    def remove_company(self, name):
+        urlLink = host+"companies/remove"
+        result = requests.post(urlLink, None, {'data': {'name': name}})
+        return JSONHelper.JSONDecoder().decode(result.text)
+
+    def update_company(self, updates):
+        urlLink = host+"companies/update"
+        result = requests.post(urlLink, None, {'data': updates})
+        return JSONHelper.JSONDecoder().decode(result.text)
 
     def save_data(self, data):
         urlLink = host+'data'
         result = requests.post(urlLink, None, {'data': data})
-        return result.text
+        return JSONHelper.JSONDecoder().decode(result.text)
 
     def get_data(self, page, company=None):
         if company is None:

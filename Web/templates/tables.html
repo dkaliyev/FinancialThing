@@ -30,7 +30,7 @@
                 <ul class="nav nav-tabs" role="tablist" id="myTabs">
                     {% for company in visible_companies %}
                     <li role="presentation" {% if company.active == True %} class="active"{% endif %}>
-                        <a href="#" aria-controls="{{company.name}}" role="tab" data-toggle="tab" onclick="get_data('{{company.name}}')">{{company.title}}<i class="fa fa-times remove" comp-name="{{company.name}}"></i></a>
+                        <a href="#{{company.name}}" aria-controls="{{company.name}}" role="tab" data-toggle="tab" onclick="get_data('{{company.name}}')">{{company.title}}<!-- <i class="fa fa-times remove" comp-name="{{company.name}}"></i> --></a>
 
                     </li>
                     {% endfor %}
@@ -166,7 +166,8 @@ function get_data(company_name) {
     //console.log($(e.currentTarget).attr('aria-controls'));
     //company_name = $(this).attr('aria-controls');
 
-      $.ajax({
+    if($('#'+company_name).length == 0){
+        $.ajax({
           url: "/api/tables/"+company_name,
           method: "GET",
           contentType: "application/json",
@@ -174,15 +175,20 @@ function get_data(company_name) {
                 var source   = $("#entry-template").html();
                 var template = Handlebars.compile(source);
                 var html = template({'datas': data['data'][0]});
-                $($(".tab-content").children()[0]).remove();
+                $('.tab-pane.fade.in').removeClass('active');
                 $(".tab-content").append(html);
-
+                $('.nav-tabs a[href="#' + company_name + '"]').show();
+                $('.nav-tabs a[href="#' + company_name + '"]').tab('show');
           },
           dataType: "json"
       }).done(function() {
             console.log("done");
         });
-       $('.nav-tabs a[href="#' + company_name + '"]').tab('show');
+  }
+  else {
+    $('.nav-tabs a[href="#' + company_name + '"]').tab('show');
+  }  
+   
 }
 </script>
 

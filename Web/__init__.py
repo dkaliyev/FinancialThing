@@ -66,16 +66,18 @@ def remove_company():
     comp = obj['name']
     return JSONHelper.JSONEncoder().encode(dataAccess.remove_company(comp))
 
-
 @app.route('/api/data/generate', methods=['GET'])
 def generate_data():
-    grabber = DataGrabber()
-    data = grabber.generate_data()
+    data = dataAccess.generate_data()
+    print data
+    #grabber = DataGrabber()
+    #data = grabber.generate_data()
     #return '1'
-    if dataAccess.save_data(data) is not []:
-        return '1'
-    else:
-        return '0'
+    #if dataAccess.save_data(data) is not []:
+    #    return '1'
+    #else:
+    #    return '0'
+    return data
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

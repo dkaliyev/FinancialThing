@@ -1,7 +1,8 @@
 {% extends "layout.html" %}
 {% set active_page = "tables" %}
 {% set visible_companies = obj.company_list %}
-{% block title %}Index-{{obj.count}}{% endblock %}
+
+{% block title %}Tables{% endblock %}
 {% block head %}
 <!-- <script src="static/js/jquery.js"></script> -->
   {{ super() }}
@@ -204,7 +205,7 @@ function get_data(company_name) {
                 <div class="row">
                     {{#each data}}
                     <div class="col-lg-4">
-                        <h3>{{report_type}}</h2>
+                        <h3>{{@key}}</h2>
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover">
                                 <thead>
@@ -216,17 +217,17 @@ function get_data(company_name) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{#each data}}
+                                    {{#each this}}
                                     <tr>
-                                        <td class="subtype">{{subtype}}</td>
+                                        <td class="subtype">{{@key}}</td>
                                     </tr>
-                                        {{#each data}}
+                                        {{#each this}}
                                         <tr>
                                             <td>
-                                                {{item_name}}
+                                                {{@key}}
                                             </td>
-                                            {{#each items}}
-                                                <td>{{value}}</td>
+                                            {{#each this}}
+                                                <td>{{this}}</td>
                                             {{/each}}
                                         </tr>
                                         {{/each}}
@@ -241,6 +242,29 @@ function get_data(company_name) {
         <div>
     </div>
     {{/with}}
+    {% endraw %}
+</script>
+<script id="ratio-template" type="text/x-handlebars-template">
+    {% raw %}
+        {{#with data}}
+            <h2> Ration analysis</h2>
+            <h2> Activity ratios </h2>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>2014</th>
+                        <th>2013</th>
+                        <th>2012</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {{#each datum}}
+                </tbody>
+                </table>
+            </div>
+        {{/with}}
     {% endraw %}
 </script>
 

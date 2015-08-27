@@ -6,7 +6,7 @@ import os.path
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from flask import Flask, jsonify, request
-from grabber import grabber
+from grabber.grabber import DataGrabber
 from Adapters.MongoDB import MongoDB
 from Helpers import JSONHelper
 import requests
@@ -32,7 +32,8 @@ def save_data():
 @app.route('/data/generate', methods=['GET'])
 def save_data_from_FT():
     grabber = DataGrabber()
-    data = grabber.generate_data()
+    companies = repo.select_companies()
+    data = grabber.generate_data({"data": companies})
     print data
     return JSONHelper.JSONEncoder().encode({'result': repo.save_many(data)})
 

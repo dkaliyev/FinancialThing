@@ -45,22 +45,29 @@ class DataGrabber:
         return odd_trs
 
     def parse_rows(self, rows):
-        data = []
+        data = {}
         subtype = "default"
         subtype_ls = []
         for row in rows:
             tds = row.select("td")
             key = tds[0].text
             if key in self.titles:
-                data.append({"subtype": subtype, "data": subtype_ls})
+                #data.append({"subtype": subtype, "data": subtype_ls})
                 subtype = key
-                subtype_ls = []
+                #subtype_ls = []
+                data[subtype] = {}
             else:
-                subtype_ls.append({"item_name": key, "items": [{"value": tds[1].text, "year": "2014"},
-                                                               {"value": tds[2].text, "year": "2013"},
-                                                               {"value": tds[3].text, "year": "2012"}]})
-        obj = [x for x in data if x["subtype"] == "default"][0]
-        data.remove(obj)
+                #subtype_ls.append({"item_name": key, "items": [{"value": tds[1].text, "year": "2014"},
+                #                                               {"value": tds[2].text, "year": "2013"},
+                #                                               {"value": tds[3].text, "year": "2012"}]})
+                data[subtype].setdefault(key, {
+                    "2014": tds[1].text,
+                    "2013": tds[2].text,
+                    "2012": tds[3].text
+                    })
+        #obj = [x for x in data if x["subtype"] == "default"][0]
+        #data.remove(obj)
+        #del data.default
         return data
 
     def create_df_and_dic(self, rows):
@@ -137,12 +144,25 @@ class DataGrabber:
             datas["company_name"] = company[0]
             datas["date_added"] = str(datetime.datetime.now())
             datas['title'] = company[2]
-            datas["data"] = []
+            datas["data"] = {}
             for header in self.headers:
                 tmp_dat = self.get_data(header, company)
-                datas["data"].append({"report_type": header, "data": tmp_dat})
+                #datas["data"].append({"report_type": header, "data": tmp_dat})
+                datas["data"].setdefault(header, tmp_dat)
+            #datas["ratios"] = 
             ls.append(datas)
         return ls
+
+    def get_ratios(self, data):
+        ratios = {}
+        for report_type in data:
+            for subtype in report_type["data"]:
+                for items in subtype["data"]:
+                    for item in items["items"]:
+                        return {
+                            ""
+                        }
+        ratios['rt'] = data['']
 
     def display_data(self, data):
         for company in data:
@@ -198,9 +218,11 @@ class DataGrabber:
         conv_companies = [(obj['company_name'], obj['stock_exc'], obj['title']) for obj in companies['data']]
         return conv_companies
 
-    def generate_data(self):
-        dataAccess = FT()
-        companies = dataAccess.get_companies()
+    def generate_data(self, companies):
+        print "hit grabber"
+        #dataAccess = FT()
+        #companies = dataAccess.get_companies()
+        print companies
         conv_companies = self.companies_to_tuple(companies)
         data = self.get_all(conv_companies)
         return data

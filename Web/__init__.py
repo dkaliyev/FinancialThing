@@ -69,7 +69,6 @@ def remove_company():
 @app.route('/api/data/generate', methods=['GET'])
 def generate_data():
     data = dataAccess.generate_data()
-    print data
     #grabber = DataGrabber()
     #data = grabber.generate_data()
     #return '1'
@@ -77,7 +76,7 @@ def generate_data():
     #    return '1'
     #else:
     #    return '0'
-    return data
+    return '1' if data['result'] else '0'
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

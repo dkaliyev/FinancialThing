@@ -30,11 +30,14 @@ def save_data():
         return '-1'
 
 @app.route('/data/generate', methods=['GET'])
-def save_data_from_FT():
-    grabber = DataGrabber()
+def save_data_from_FT():    
     companies = repo.select_companies()
-    data = grabber.generate_data({"data": companies})
-    print data
+    codes = repo.select_codes()['mapping']
+    code = {}
+    for obj in codes:
+        code[obj['name']] = obj['code']
+    grabber = DataGrabber({"data":companies}, code)
+    data = grabber.generate_data()
     return JSONHelper.JSONEncoder().encode({'result': repo.save_many(data)})
 
 @app.route('/data/count', methods=['GET'])

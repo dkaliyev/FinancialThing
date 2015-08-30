@@ -16,7 +16,9 @@ class DataGrabber:
               "INCOME TAXES, MINORITY INTEREST AND EXTRA ITEMS", "EPS RECONCILIATION", "COMMON STOCK DIVIDENDS",
               "PRO FORMA INCOME", "SUPPLEMENTAL INCOME", "NORMALIZED INCOME"]
 
-    companies = [("IMT", "LSE"), ("BARC", "LSE")]
+    def __init__(self, companies=None, codes=None):
+        self.companies = companies
+        self.codes = codes
 
     def get_page(self, urlLink):
         page = requests.get(urlLink)
@@ -53,14 +55,14 @@ class DataGrabber:
             key = tds[0].text
             if key in self.titles:
                 #data.append({"subtype": subtype, "data": subtype_ls})
-                subtype = key
+                subtype = self.codes[key]
                 #subtype_ls = []
                 data[subtype] = {}
             else:
                 #subtype_ls.append({"item_name": key, "items": [{"value": tds[1].text, "year": "2014"},
                 #                                               {"value": tds[2].text, "year": "2013"},
                 #                                               {"value": tds[3].text, "year": "2012"}]})
-                data[subtype].setdefault(key, {
+                data[subtype].setdefault(self.codes[key], {
                     "2014": tds[1].text,
                     "2013": tds[2].text,
                     "2012": tds[3].text
@@ -218,12 +220,10 @@ class DataGrabber:
         conv_companies = [(obj['company_name'], obj['stock_exc'], obj['title']) for obj in companies['data']]
         return conv_companies
 
-    def generate_data(self, companies):
-        print "hit grabber"
+    def generate_data(self):
         #dataAccess = FT()
         #companies = dataAccess.get_companies()
-        print companies
-        conv_companies = self.companies_to_tuple(companies)
+        conv_companies = self.companies_to_tuple(self.companies)
         data = self.get_all(conv_companies)
         return data
 
